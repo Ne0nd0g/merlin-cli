@@ -2,7 +2,7 @@
 Merlin is a post-exploitation command and control framework.
 
 This file is part of Merlin.
-Copyright (C) 2023  Russel Van Tuyl
+Copyright (C) 2023 Russel Van Tuyl
 
 Merlin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package stop
 import (
 	// Standard
 	"fmt"
+	"log/slog"
 	"strings"
 
 	// 3rd Party
@@ -70,7 +71,7 @@ func NewCommand() *Command {
 }
 
 func (c *Command) Completer(m menu.Menu, id uuid.UUID) (comp readline.PrefixCompleterInterface) {
-
+	slog.Debug("entering into function", "menu", m, "id", id)
 	switch m {
 	case menu.LISTENER:
 		comp = readline.PcItem(c.name)
@@ -90,6 +91,7 @@ func (c *Command) Completer(m menu.Menu, id uuid.UUID) (comp readline.PrefixComp
 // arguments, and optional, parameter, is the full unparsed string entered on the command line to include the
 // command itself passed into command for processing
 func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response commands.Response) {
+	slog.Debug("entering into function", "menu", m, "id", id, "arguments", arguments)
 	// Parse the arguments
 	args := strings.Split(arguments, " ")
 
@@ -121,7 +123,7 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 }
 
 // Help returns a help.Help structure that can be used to view a command's Description, Notes, Usage, and an example
-func (c *Command) Help(m menu.Menu) help.Help {
+func (c *Command) Help(menu.Menu) help.Help {
 	return c.help
 }
 

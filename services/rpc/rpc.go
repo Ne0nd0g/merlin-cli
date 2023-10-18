@@ -2,7 +2,7 @@
 Merlin is a post-exploitation command and control framework.
 
 This file is part of Merlin.
-Copyright (C) 2023  Russel Van Tuyl
+Copyright (C) 2023 Russel Van Tuyl
 
 Merlin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -234,7 +234,9 @@ func newUserMessageFromPBMessage(msg *pb.Message) (m *message.UserMessage) {
 
 // getTLSConfig creates a new TLS configuration for the RPC service
 func getTLSConfig(secure bool, tlsKey, tlsCert, tlsCA string) (*tls.Config, error) {
-	tlsConfig := &tls.Config{}
+	tlsConfig := &tls.Config{
+		MinVersion: tls.VersionTLS12,
+	}
 	if !secure {
 		tlsConfig.InsecureSkipVerify = true
 	}
@@ -248,7 +250,7 @@ func getTLSConfig(secure bool, tlsKey, tlsCert, tlsCA string) (*tls.Config, erro
 		}
 
 		// Read the TLS CA file in as bytes
-		caBytes, err := os.ReadFile(tlsCA)
+		caBytes, err := os.ReadFile(tlsCA) // #nosec G304 Users are permitted to include any file
 		if err != nil {
 			return nil, fmt.Errorf("there was an error reading the TLS CA file at '%s': %s", tlsCA, err)
 		}
@@ -308,7 +310,7 @@ func getTLSConfig(secure bool, tlsKey, tlsCert, tlsCA string) (*tls.Config, erro
 		}
 
 		// Read the TLS certificate file in as bytes
-		certBytes, err := os.ReadFile(tlsCert)
+		certBytes, err := os.ReadFile(tlsCert) // #nosec G304 Users are permitted to include any file
 		if err != nil {
 			return nil, fmt.Errorf("there was an error reading the TLS certificate file at '%s': %s", tlsCert, err)
 		}
@@ -328,7 +330,7 @@ func getTLSConfig(secure bool, tlsKey, tlsCert, tlsCA string) (*tls.Config, erro
 
 		// Load the TLS certificate and key
 		var cer tls.Certificate
-		cer, err = tls.LoadX509KeyPair(tlsCert, tlsKey)
+		cer, err = tls.LoadX509KeyPair(tlsCert, tlsKey) // #nosec G304 Users are permitted to include any file
 		if err != nil {
 			return nil, fmt.Errorf("there was an error loading the X509 key pair: %s", err)
 		}

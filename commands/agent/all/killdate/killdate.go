@@ -2,7 +2,7 @@
 Merlin is a post-exploitation command and control framework.
 
 This file is part of Merlin.
-Copyright (C) 2023  Russel Van Tuyl
+Copyright (C) 2023 Russel Van Tuyl
 
 Merlin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package killdate
 import (
 	// Standard
 	"fmt"
+	"log/slog"
 	"strconv"
 	"strings"
 
@@ -78,8 +79,7 @@ func NewCommand() *Command {
 // Completer returns the data that is displayed in the CLI for tab completion depending on the menu the command is for
 // Errors are not returned to ensure the CLI is not interrupted.
 // Errors are logged and can be viewed by enabling debug output in the CLI
-func (c *Command) Completer(m menu.Menu, id uuid.UUID) readline.PrefixCompleterInterface {
-
+func (c *Command) Completer(menu.Menu, uuid.UUID) readline.PrefixCompleterInterface {
 	return readline.PcItem(c.name)
 }
 
@@ -89,6 +89,7 @@ func (c *Command) Completer(m menu.Menu, id uuid.UUID) readline.PrefixCompleterI
 // arguments, and optional, parameter, is the full unparsed string entered on the command line to include the
 // command itself passed into command for processing
 func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response commands.Response) {
+	slog.Debug("entering into function", "menu", m, "id", id, "arguments", arguments)
 	// Parse the arguments
 	args := strings.Split(arguments, " ")
 
@@ -117,7 +118,7 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 }
 
 // Help returns a help.Help structure that can be used to view a command's Description, Notes, Usage, and an example
-func (c *Command) Help(m menu.Menu) help.Help {
+func (c *Command) Help(menu.Menu) help.Help {
 	return c.help
 }
 

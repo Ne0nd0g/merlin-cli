@@ -2,7 +2,7 @@
 Merlin is a post-exploitation command and control framework.
 
 This file is part of Merlin.
-Copyright (C) 2023  Russel Van Tuyl
+Copyright (C) 2023 Russel Van Tuyl
 
 Merlin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -621,7 +621,7 @@ func logging() {
 		if err != nil {
 			log.Fatal(fmt.Sprintf("there was an error creating the log directory at %s: %s", logFileDir, err))
 		}
-		logFile, err = os.Create(logFilePath)
+		logFile, err = os.Create(logFilePath) // #nosec G304 - Users can choose any file to write to
 		if err != nil {
 			log.Fatal(fmt.Sprintf("there was an error creating the log file at %s: %s", logFilePath, err))
 		}
@@ -635,7 +635,7 @@ func logging() {
 	}
 
 	// File already exists, open it for appending
-	logFile, err = os.OpenFile(logFilePath, os.O_APPEND|os.O_WRONLY, 0600)
+	logFile, err = os.OpenFile(logFilePath, os.O_APPEND|os.O_WRONLY, 0600) // #nosec G304 - Users can choose any file to open
 	if err != nil {
 		log.Fatal(fmt.Sprintf("there was an error opening the log file at %s: %s", logFilePath, err))
 	}

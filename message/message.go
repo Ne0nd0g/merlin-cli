@@ -2,7 +2,7 @@
 Merlin is a post-exploitation command and control framework.
 
 This file is part of Merlin.
-Copyright (C) 2023  Russel Van Tuyl
+Copyright (C) 2023 Russel Van Tuyl
 
 Merlin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -80,26 +80,6 @@ func NewErrorMessage(err error) *UserMessage {
 		message:   err.Error(),
 		timestamp: time.Now().UTC(),
 		isError:   true,
-	}
-}
-
-// LevelFromInt32 converts an int32 to a Level
-func LevelFromInt32(level int32) Level {
-	switch level {
-	case 1:
-		return Info
-	case 2:
-		return Note
-	case 3:
-		return Warn
-	case 4:
-		return Debug
-	case 5:
-		return Success
-	case 6:
-		return Plain
-	default:
-		return Undefined
 	}
 }
 

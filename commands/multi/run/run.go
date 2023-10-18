@@ -2,7 +2,7 @@
 Merlin is a post-exploitation command and control framework.
 
 This file is part of Merlin.
-Copyright (C) 2023  Russel Van Tuyl
+Copyright (C) 2023 Russel Van Tuyl
 
 Merlin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@ func NewCommand() *Command {
 // Completer returns the data that is displayed in the CLI for tab completion depending on the menu the command is for
 // Errors are not returned to ensure the CLI is not interrupted.
 // Errors are logged and can be viewed by enabling debug output in the CLI
-func (c *Command) Completer(m menu.Menu, id uuid.UUID) readline.PrefixCompleterInterface {
+func (c *Command) Completer(menu.Menu, uuid.UUID) readline.PrefixCompleterInterface {
 	return readline.PcItem(c.name)
 }
 
@@ -241,7 +241,7 @@ func (c *Command) DoListener(id uuid.UUID, arguments string) (response commands.
 	// Use the API to start the listener
 	response.Message = rpc.StartListener(serverID)
 	if msg.Error() {
-		err = fmt.Errorf("the %s listener was created but there was an error starting it: %s", serverID, msg.Message)
+		err = fmt.Errorf("the %s listener was created but there was an error starting it: %s", serverID, msg.Message())
 		response.Message = message.NewErrorMessage(err)
 		return
 	}
