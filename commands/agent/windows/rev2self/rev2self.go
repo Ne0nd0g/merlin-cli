@@ -62,7 +62,7 @@ func NewCommand() *Command {
 		"\t[-] Results job ZXKyKuIZru for agent c1090dbc-f2f7-4d90-a241-86e0c0217786\n\n" +
 		"\t[+] Successfully reverted to self and dropped the impersonation token"
 	notes := "This command is an alias for the 'token rev2self' command.\n" +
-		"\tLeverages the RevertToSelf Windows API function. There is 'rev2sef' command alias.\n" +
+		"\tLeverages the RevertToSelf Windows API function.\n" +
 		"\tReferences:\n" +
 		"\t\t- https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-reverttoself"
 	cmd.help = help.NewHelp(description, example, notes, usage)

@@ -64,7 +64,6 @@ func NewCommand() *Command {
 	notes := "This command is an alias for the 'token steal' command.\n" +
 		"\tThe steal command obtains a handle to a remote process’ access token, duplicates it through the " +
 		"DuplicateTokenEx Windows API, and subsequently uses it to perform future post-exploitation commands.\n" +
-		"\tThere is an unregistered steal_token command alias that can be use from the agent root menu prompt\n" +
 		"\tReferences:\n" +
 		"\t\t- https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-duplicatetokenex"
 	cmd.help = help.NewHelp(description, example, notes, usage)
