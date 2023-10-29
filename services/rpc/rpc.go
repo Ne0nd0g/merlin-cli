@@ -138,7 +138,7 @@ func (s *Service) Connect(addr string) error {
 		return fmt.Errorf("there was an error converting the UUID from the server: %s", err)
 	}
 
-	msg := message.NewUserMessage(message.Success, fmt.Sprintf("Succesfully connected to Merlin server at %s", addr))
+	msg := message.NewUserMessage(message.Success, fmt.Sprintf("Successfully connected to Merlin server at %s", addr))
 	s.messageRepo.Add(msg)
 
 	// Create a stream to listen for messages from the server

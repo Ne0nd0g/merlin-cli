@@ -63,7 +63,7 @@ func NewUserMessage(level Level, message string) *UserMessage {
 }
 
 // NewUserMessageFull is a factory that builds and returns a UserMessage structure
-// Typically used to convert a pb.Message structure to a UserMessage structure so that the timestamp can be transfered
+// Typically used to convert a pb.Message structure to a UserMessage structure so that the timestamp can be transferred
 func NewUserMessageFull(level Level, message string, timestamp time.Time, isError bool) *UserMessage {
 	return &UserMessage{
 		level:     level,
