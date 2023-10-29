@@ -21,7 +21,7 @@ along with Merlin.  If not, see <http://www.gnu.org/licenses/>.
 package version
 
 // Version is a constant variable containing the version number for the Merlin CLI program
-const Version = "0.0.0"
+const Version = "1.0.0"
 
 // Build is the unique number based off the git commit in which it is compiled against
 var Build = "nonRelease"
