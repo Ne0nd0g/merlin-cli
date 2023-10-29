@@ -91,9 +91,15 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 	}
 
 	msg := "\n"
-	msg += color.BlueString(banner.MerlinBanner1)
-	msg += color.BlueString("\r\n\t\t   Version: %s", merlin.Version)
-	msg += color.BlueString("\r\n\t\t   Build: %s\n", merlin.Build)
+	if len(args) > 1 {
+		if strings.ToLower(args[1]) == "gandalf" {
+			msg += color.BlueString(banner.MerlinBanner2)
+		}
+	} else {
+		msg += color.BlueString(banner.MerlinBanner1)
+	}
+	msg += color.BlueString("\n\t\t   Version: %s", merlin.Version)
+	msg += color.BlueString("\n\t\t   Build: %s\n", merlin.Build)
 
 	response.Message = message.NewUserMessage(message.Plain, msg)
 	return

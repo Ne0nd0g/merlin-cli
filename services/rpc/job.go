@@ -74,19 +74,6 @@ func GetAllActiveJobs() (jobs []job.Job, err error) {
 	return
 }
 
-// GetAllJobs returns all Agent jobs from the RPC server
-func GetAllJobs() (jobs []job.Job, err error) {
-	response, err := service.merlinClient.GetAllJobs(context.Background(), &emptypb.Empty{})
-	if err != nil {
-		err = fmt.Errorf("there was an error calling the GetAllJobs RPC method: %s", err)
-		return
-	}
-	for _, j := range response.Jobs {
-		jobs = append(jobs, jobFromJobInfo(j))
-	}
-	return
-}
-
 // jobFromJobInfo converts a job protobuf message into a Job message structure used on the client
 func jobFromJobInfo(j *pb.Job) job.Job {
 	return job.Job{
