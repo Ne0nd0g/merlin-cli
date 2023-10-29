@@ -2,7 +2,6 @@ name: "Merlin CLI Release"
 
 on:
   push:
-    branches: [ "main", "Default" ]
     tags:
       - 'v*.*.*'
 
@@ -39,6 +38,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag: ${{ github.ref }}
+          name: ${{ github.ref }}
           draft: true
           prerelease: false
           artifactErrorsFailBuild: true
