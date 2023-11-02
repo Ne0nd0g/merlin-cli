@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with Merlin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package template
+package parrot
 
 import (
 	// Standard
@@ -36,6 +36,7 @@ import (
 	"github.com/Ne0nd0g/merlin-cli/entity/menu"
 	"github.com/Ne0nd0g/merlin-cli/entity/os"
 	"github.com/Ne0nd0g/merlin-cli/message"
+	"github.com/Ne0nd0g/merlin-cli/services/rpc"
 )
 
 // Command is an aggregate structure for a command executed on the command line interface
@@ -51,13 +52,16 @@ type Command struct {
 func NewCommand() *Command {
 	var cmd Command
 	// name MUST be unique across all commands and is used as the primary key in the database
-	cmd.name = ""
+	cmd.name = "parrot"
 	cmd.menus = []menu.Menu{menu.AGENT}
 	cmd.os = os.ALL
-	description := ""
-	usage := ""
-	example := ""
-	notes := ""
+	description := "Change the HTTP configuration to match (parrot) the provided browser"
+	usage := "parrot HelloChrome_Auto"
+	example := "Merlin[agent][c1090dbc-f2f7-4d90-a241-86e0c0217786]» parrot HelloChrome_Auto "
+	notes := "A list of valid values to parrot can be found at " +
+		"https://github.com/refraction-networking/utls/blob/8e1e65eb22d21c635523a31ec2bcb8730991aaad/u_common.go#L150" +
+		"\n\n\tTab completion contains _some_ but not all of the valid values." +
+		"\n\n\tThis will override the JA3 settings if they are set."
 	cmd.help = help.NewHelp(description, example, notes, usage)
 	return &cmd
 }
@@ -66,7 +70,18 @@ func NewCommand() *Command {
 // Errors are not returned to ensure the CLI is not interrupted.
 // Errors are logged and can be viewed by enabling debug output in the CLI
 func (c *Command) Completer(menu.Menu, uuid.UUID) readline.PrefixCompleterInterface {
-	return readline.PcItem(c.name)
+	return readline.PcItem(c.name,
+		readline.PcItem("HelloGolang"),
+		readline.PcItem("HelloRandomized"),
+		readline.PcItem("HelloFirefox_Auto"),
+		readline.PcItem("HelloChrome_Auto"),
+		readline.PcItem("HelloIOS_Auto"),
+		readline.PcItem("HelloSafari_Auto"),
+		readline.PcItem("HelloAndroid_11_OkHttp"),
+		readline.PcItem("HelloEdge_Auto"),
+		readline.PcItem("Hello360_Auto"),
+		readline.PcItem("HelloQQ_Auto"),
+	)
 }
 
 // Do executes the command and returns a Response to the caller to facilitate changes in the CLI service
@@ -80,12 +95,10 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 	args := strings.Split(arguments, " ")
 
 	// Validate at least one argument, in addition to the command, was provided
-	/*
-		if len(args) < 2 {
-			response.Message = message.NewUserMessage(message.Info, fmt.Sprintf("'%s' command requires at least one argument\n%s", c, c.help.Usage()))
-			return
-		}
-	*/
+	if len(args) < 2 {
+		response.Message = message.NewUserMessage(message.Info, fmt.Sprintf("'%s' command requires at least one argument\n%s", c, c.help.Usage()))
+		return
+	}
 
 	// Check for help first
 	if len(args) > 1 {
@@ -95,6 +108,7 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 			return
 		}
 	}
+	response.Message = rpc.Parrot(id, args[1:])
 	return
 }
 

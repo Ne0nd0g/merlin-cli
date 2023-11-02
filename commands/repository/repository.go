@@ -25,7 +25,6 @@ import (
 	// Standard
 	"errors"
 	"fmt"
-	"github.com/Ne0nd0g/merlin-cli/commands/multi/use"
 	"sync"
 
 	// Internal
@@ -51,6 +50,7 @@ import (
 	"github.com/Ne0nd0g/merlin-cli/commands/agent/all/note"
 	"github.com/Ne0nd0g/merlin-cli/commands/agent/all/nslookup"
 	"github.com/Ne0nd0g/merlin-cli/commands/agent/all/padding"
+	"github.com/Ne0nd0g/merlin-cli/commands/agent/all/parrot"
 	"github.com/Ne0nd0g/merlin-cli/commands/agent/all/printenv"
 	"github.com/Ne0nd0g/merlin-cli/commands/agent/all/pwd"
 	"github.com/Ne0nd0g/merlin-cli/commands/agent/all/rm"
@@ -125,6 +125,7 @@ import (
 	"github.com/Ne0nd0g/merlin-cli/commands/multi/show"
 	"github.com/Ne0nd0g/merlin-cli/commands/multi/socks"
 	"github.com/Ne0nd0g/merlin-cli/commands/multi/status"
+	"github.com/Ne0nd0g/merlin-cli/commands/multi/use"
 )
 
 var pkg = "pkg/cli/commands/memory.go"
@@ -248,6 +249,7 @@ func (r *Repository) load() {
 	r.Add(note.NewCommand())
 	r.Add(nslookup.NewCommand())
 	r.Add(padding.NewCommand())
+	r.Add(parrot.NewCommand())
 	r.Add(printenv.NewCommand())
 	r.Add(pwd.NewCommand())
 	r.Add(rm.NewCommand())

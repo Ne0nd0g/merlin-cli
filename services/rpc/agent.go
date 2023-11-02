@@ -260,6 +260,12 @@ func Padding(id uuid.UUID, args []string) (msg *message.UserMessage) {
 	return buildMessage(service.merlinClient.Padding(context.Background(), &pb.AgentCMD{ID: id.String(), Arguments: args}))
 }
 
+// Parrot configures the Agent's HTTP client to match the provided browser
+// args[0] = the browser to match (e.g., HelloChrome_Auto)
+func Parrot(id uuid.UUID, args []string) (msg *message.UserMessage) {
+	return buildMessage(service.merlinClient.Parrot(context.Background(), &pb.AgentCMD{ID: id.String(), Arguments: args}))
+}
+
 // Pipes enumerates and displays named pipes on Windows hosts only
 func Pipes(id uuid.UUID) (msg *message.UserMessage) {
 	return buildMessage(service.merlinClient.Pipes(context.Background(), &pb.ID{Id: id.String()}))
