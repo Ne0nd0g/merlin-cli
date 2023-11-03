@@ -55,8 +55,8 @@ func NewCommand() *Command {
 	cmd.name = "parrot"
 	cmd.menus = []menu.Menu{menu.AGENT}
 	cmd.os = os.ALL
-	description := "Change the HTTP configuration to match (parrot) the provided browser"
-	usage := "parrot HelloChrome_Auto"
+	description := "Change the HTTP TLS configuration to match (parrot) the provided browser"
+	usage := "parrot browserString"
 	example := "Merlin[agent][c1090dbc-f2f7-4d90-a241-86e0c0217786]» parrot HelloChrome_Auto "
 	notes := "A list of valid values to parrot can be found at " +
 		"https://github.com/refraction-networking/utls/blob/8e1e65eb22d21c635523a31ec2bcb8730991aaad/u_common.go#L150" +
