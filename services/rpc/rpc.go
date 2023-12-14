@@ -185,12 +185,30 @@ func Reconnect() (msg *message.UserMessage) {
 // listen is a gRPC stream run as a go routine that listens for messages from the server
 func (s *Service) listen() {
 	for {
+		// Recover the connection if it was lost
+		if s.messageStream == nil {
+			slog.Info("the message stream was nil, attempting to reconnect")
+			id := &pb.ID{Id: s.id.String()}
+			var err error
+			s.messageStream, err = s.merlinClient.Listen(context.Background(), id)
+			if err != nil {
+				usrMsg := message.NewErrorMessage(fmt.Errorf("there was an error calling the Listen method: %s", err))
+				s.messageRepo.Add(usrMsg)
+				s.messageStream = nil
+				return
+			}
+			m := message.NewUserMessage(message.Info, fmt.Sprintf("Recovered gRPC message stream from %s", s.rpcAddr))
+			s.messageRepo.Add(m)
+			slog.Info(m.Message())
+		}
+
+		// Receive a message from the server
 		msg, err := s.messageStream.Recv()
 		if err != nil {
 			usrMsg := message.NewErrorMessage(fmt.Errorf("there was an error receiving a message from the server stream: %s", err))
 			s.messageRepo.Add(usrMsg)
 			s.messageStream = nil
-			return
+			continue
 		}
 		s.messageRepo.Add(newUserMessageFromPBMessage(msg))
 	}
