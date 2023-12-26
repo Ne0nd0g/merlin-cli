@@ -12,4 +12,4 @@ FROM ne0nd0g/merlin-base:v1.5.0
 
 WORKDIR /opt/merlin-cli
 
-ENTRYPOINT ["merlinCLI-Linux-x64", "-addr", "127.0.0.1:50051"]
+ENTRYPOINT ["./merlinCLI-Linux-x64", "-addr", "127.0.0.1:50051"]
