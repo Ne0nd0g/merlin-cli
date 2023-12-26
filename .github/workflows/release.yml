@@ -21,17 +21,9 @@ jobs:
         with:
           go-version: '1.21'
 
-      - name: Make Windows
-        id: make_windows
-        run: make windows
-
-      - name: Make Linux
-        id: make_linux
-        run: make linux
-
-      - name: Make macOS
-        id: make_mac
-        run: make darwin
+      - name: Make Release
+        id: make_release
+        run: make release
 
       - name: Create Draft Release
         id: create_draft_release
