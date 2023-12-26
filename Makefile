@@ -24,6 +24,11 @@ linux:
 windows:
 	export GOOS=windows;export GOARCH=amd64;go build ${LDFLAGS} -o ${DIR}/merlinCLI-Windows-x64.exe main.go
 
+move:
+	mv ${DIR}/merlinCLI-* .
+
+release: all move
+
 clean:
 	rm -rf merlinCLI-*
 	rm -rf ${DIR}/merlinCLI-*
