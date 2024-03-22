@@ -2,6 +2,7 @@
 VERSION=$(shell cat version/version.go |grep "const Version ="|cut -d"\"" -f2)
 BUILD=$(shell git rev-parse HEAD)
 DIR=bin/v${VERSION}/${BUILD}
+DEST=.
 
 # Go build flags
 LDFLAGS=-ldflags '-X github.com/Ne0nd0g/merlin-cli/version.Build=${BUILD}'
@@ -25,7 +26,7 @@ windows:
 	export GOOS=windows;export GOARCH=amd64;go build ${LDFLAGS} -o ${DIR}/merlinCLI-Windows-x64.exe main.go
 
 move:
-	mv ${DIR}/merlinCLI-* .
+	mv ${DIR}/merlinCLI-* ${DEST}
 
 release: all move
 
