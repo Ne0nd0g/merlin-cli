@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.1.3 - 2024-04-04
+
+### Changed
+
+- upgraded github.com/google/uuid v1.5.0 => v1.6.0
+- upgraded google.golang.org/grpc v1.60.1 => v1.63.0
+
+### Security
+
+- [CVE-2024-24786](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-24786) - Upgraded `google.golang.org/protobuf` to v1.33.0
+
 ## 1.1.2 - 2023-12-26
 
 ### Added
