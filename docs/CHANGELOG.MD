@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.1.5 - 2025-04-17
+
+### Changed
+
+- Upgraded the minimum version of go to v1.23
+- Upgreaded the following libraries:
+  - google.golang.org/grpc v1.63.2 => v1.71.1
+  - google.golang.org/protobuf v1.33.0 => v1.36.6
+  - github.com/fatih/color v1.16.0 => v1.18.0
+
 ## 1.1.4 - 2024-04-23
 
 ### Changed
