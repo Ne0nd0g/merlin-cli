@@ -329,8 +329,6 @@ func (s *Service) handle(input string) {
 	if comp != nil {
 		s.prompt.Config.AutoComplete = comp
 	}
-
-	return
 }
 
 // help prints a table of commands, their descriptions, and their usage string that are available for the current menu
@@ -523,7 +521,6 @@ func (s *Service) queueCommand(input string) {
 		s.agent = uuid.Nil
 		s.Unlock()
 	}
-	return
 }
 
 // displayUserMessages is an infinite loop as a go routine that gets UserMessage structures from the repository and

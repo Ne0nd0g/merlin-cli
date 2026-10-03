@@ -21,7 +21,6 @@ along with Merlin.  If not, see <http://www.gnu.org/licenses/>.
 package memory
 
 import (
-	"errors"
 	"fmt"
 	"github.com/Ne0nd0g/merlin-cli/entity/listener"
 	"github.com/google/uuid"
@@ -34,7 +33,7 @@ type Repository struct {
 }
 
 var pkg = "pkg/cli/listener/memory.go"
-var ErrListenerNotFound = errors.New(fmt.Sprintf("%s: listener not found", pkg))
+var ErrListenerNotFound = fmt.Errorf("%s: listener not found", pkg)
 
 // repo is the in-memory database
 var repo *Repository

@@ -45,10 +45,10 @@ import (
 
 // Command is an aggregate structure for a command executed on the command line interface
 type Command struct {
-	name   string      // name is the name of the command
-	help   help.Help   // help is the Help structure for the command
-	menus  []menu.Menu // menu is the Menu the command can be used in
-	os     os.OS       // os is the supported operating system the Agent command can be executed on
+	name  string      // name is the name of the command
+	help  help.Help   // help is the Help structure for the command
+	menus []menu.Menu // menu is the Menu the command can be used in
+	os    os.OS       // os is the supported operating system the Agent command can be executed on
 }
 
 // NewCommand is a factory that builds and returns a Command structure that implements the Command interface
@@ -132,7 +132,7 @@ func (c *Command) DoListeners(arguments string) (response commands.Response) {
 
 	// Loop through the types and check if the user provided type is supported
 	for _, t := range types {
-		if strings.ToLower(t) == strings.ToLower(args[1]) {
+		if strings.EqualFold(t, args[1]) {
 			msg, options := rpc.ListenerGetDefaultOptions(t)
 			if msg.Error() {
 				response.Message = msg

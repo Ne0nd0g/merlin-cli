@@ -26,7 +26,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"io"
 	"log/slog"
 	os2 "os"
 	"path/filepath"
@@ -47,10 +46,10 @@ import (
 
 // Command is an aggregate structure for a command executed on the command line interface
 type Command struct {
-	name   string      // name is the name of the command
-	help   help.Help   // help is the Help structure for the command
-	menus  []menu.Menu // menu is the Menu the command can be used in
-	os     os.OS       // os is the supported operating system the Agent command can be executed on
+	name  string      // name is the name of the command
+	help  help.Help   // help is the Help structure for the command
+	menus []menu.Menu // menu is the Menu the command can be used in
+	os    os.OS       // os is the supported operating system the Agent command can be executed on
 }
 
 // NewCommand is a factory that builds and returns a Command structure that implements the Command interface
@@ -133,7 +132,7 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 
 	// Generate and log filepath and hash
 	fileHash := sha256.New() // #nosec G401 // Use SHA1 because it is what many Blue Team tools use
-	_, err = io.WriteString(fileHash, string(data))
+	_, err = fileHash.Write(data)
 	if err != nil {
 		slog.Error(fmt.Sprintf("there was an error generating tha SHA256 file hash for %s: %s", args[1], err))
 	} else {

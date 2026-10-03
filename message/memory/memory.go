@@ -44,7 +44,6 @@ func NewRepository() *Repository {
 // Add adds a message to the repository's clients channel
 func (r *Repository) Add(message *message.UserMessage) {
 	r.messages <- message
-	return
 }
 
 // Get returns a message from the repository's clients channel

@@ -23,7 +23,6 @@ package repository
 
 import (
 	// Standard
-	"errors"
 	"fmt"
 	"sync"
 
@@ -129,8 +128,8 @@ import (
 )
 
 var pkg = "pkg/cli/commands/memory.go"
-var ErrCommandNotFound = errors.New(fmt.Sprintf("%s: command not found", pkg))
-var ErrCommandNotInMenu = errors.New(fmt.Sprintf("%s: command not in menu", pkg))
+var ErrCommandNotFound = fmt.Errorf("%s: command not found", pkg)
+var ErrCommandNotInMenu = fmt.Errorf("%s: command not in menu", pkg)
 
 // Repository structure implements an in-memory database that holds a map of Command structures used with the Merlin CLI
 type Repository struct {
@@ -157,7 +156,6 @@ func (r *Repository) Add(cmd commands.Command) {
 	r.Lock()
 	defer r.Unlock()
 	r.commands[cmd.String()] = cmd
-	return
 }
 
 func (r *Repository) Get(m menu.Menu, cmd string) (command commands.Command, err error) {

@@ -82,9 +82,7 @@ func ListenerTypesCompleter() func(string) []string {
 	comp := func(line string) []string {
 		l := make([]string, 0)
 		types := rpc.Servers()
-		for _, t := range types {
-			l = append(l, t)
-		}
+		l = append(l, types...)
 		return l
 	}
 	return comp
