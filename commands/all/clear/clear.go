@@ -45,7 +45,6 @@ type Command struct {
 	alias  []string
 	help   help.Help   // help is the Help structure for the command
 	menus  []menu.Menu // menu is the Menu the command can be used in
-	native bool        // native is true if the command is executed by an Agent using only Golang native code
 	os     os.OS       // os is the supported operating system the Agent command can be executed on
 }
 
