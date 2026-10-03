@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/mattn/go-shellwords v1.0.16
 	github.com/olekukonko/tablewriter v0.0.5
-	google.golang.org/grpc v1.84.0
+	google.golang.org/grpc v1.83.2 // pinned <1.84: v1.84.0 regressed GO-2026-6443; next stable fix is v1.85.x
 	google.golang.org/protobuf v1.36.12
 )
 
