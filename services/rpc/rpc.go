@@ -116,7 +116,7 @@ func (s *Service) Connect(addr string) error {
 	opts = append(opts, grpc.WithStreamInterceptor(s.authenticateStream))
 	opts = append(opts, grpc.WithTransportCredentials(credentials.NewTLS(s.tlsConfig)))
 
-	conn, err := grpc.Dial(addr, opts...)
+	conn, err := grpc.NewClient(addr, opts...)
 
 	if err != nil {
 		return fmt.Errorf("there was an error connecting to %s: %s", addr, err)
