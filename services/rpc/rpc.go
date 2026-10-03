@@ -56,7 +56,6 @@ type Service struct {
 	rpcAddr       string                 // rpcAddr is the RPC server address
 	merlinClient  pb.MerlinClient        // merlinClient is the gRPC client for the Merlin service
 	messageStream pb.Merlin_ListenClient // messageStream is a gRPC stream to listen for messages from the RPC server
-	cliClientID   uuid.UUID              // cliClientID is the UUID of the CLI client used to send messages to the repository
 	messageRepo   message.Repository     // messageRepo is the repository of user messages displayed on the CLI
 	password      string                 // password is the RPC client password used to authenticate to the server
 	tlsConfig     *tls.Config
