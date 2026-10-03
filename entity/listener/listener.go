@@ -3,10 +3,9 @@ package listener
 import "github.com/google/uuid"
 
 type Listener struct {
-	id       uuid.UUID
-	options  map[string]string
-	proto    string
-	serverID uuid.UUID
+	id      uuid.UUID
+	options map[string]string
+	proto   string
 }
 
 func NewListener(proto string, options map[string]string) Listener {
@@ -29,11 +28,8 @@ func (l Listener) Protocol() string {
 	return l.proto
 }
 
-// ServerID updates the structure with the server ID the server uses
-func (l Listener) ServerID(id uuid.UUID) {
-	l.serverID = id
-}
-
-func (l Listener) Update(options map[string]string) {
+// Update replaces the listener's options. Uses a pointer receiver so the
+// mutation persists; the previous value receiver silently discarded it.
+func (l *Listener) Update(options map[string]string) {
 	l.options = options
 }

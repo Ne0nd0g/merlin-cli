@@ -73,19 +73,6 @@ func (r *Repository) Remove(id uuid.UUID) {
 	}
 }
 
-func (r *Repository) ServerID(id uuid.UUID, serverID uuid.UUID) (err error) {
-	r.Lock()
-	defer r.Unlock()
-	for i, l := range r.listeners {
-		if l.ID() == id {
-			l.ServerID(serverID)
-			r.listeners[i] = l
-			return
-		}
-	}
-	return ErrListenerNotFound
-}
-
 func (r *Repository) Update(id uuid.UUID, options map[string]string) error {
 	r.Lock()
 	defer r.Unlock()
