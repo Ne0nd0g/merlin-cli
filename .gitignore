@@ -11,5 +11,8 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# merlin-cli runtime log (written to the current working directory)
+merlinClientLog.txt
+
 # Dependency directories (remove the comment below to include it)
 # vendor/
