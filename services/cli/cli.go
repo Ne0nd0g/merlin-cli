@@ -165,12 +165,8 @@ func (s *Service) Run(addr string) {
 		line, err = s.prompt.Readline()
 
 		// Handle Ctrl+C
-		if err == readline.ErrInterrupt {
-			if s.confirm("Are you sure you want to quit the server?") {
-				slog.Info("[!]Quitting...")
-				os.Exit(0)
-			}
-		} else if err == io.EOF {
+		switch err {
+		case readline.ErrInterrupt, io.EOF:
 			if s.confirm("Are you sure you want to quit the server?") {
 				slog.Info("[!]Quitting...")
 				os.Exit(0)
