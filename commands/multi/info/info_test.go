@@ -18,9 +18,25 @@ package info
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 )
+
+// TestLastCheckin verifies the check-in formatter: a parseable RFC3339 timestamp yields an
+// "H:MM:SS ago" string, and anything unparseable (including an empty value) yields "unknown"
+// rather than a bogus duration measured from the zero time.
+func TestLastCheckin(t *testing.T) {
+	got := lastCheckin(time.Now().Add(-90 * time.Minute).Format(time.RFC3339))
+	if !strings.HasSuffix(got, " ago") || !strings.HasPrefix(got, "1:") {
+		t.Errorf("lastCheckin(90m ago) = %q, want like \"1:30:00 ago\"", got)
+	}
+	for _, in := range []string{"", "not-a-timestamp", "2026-13-99T99:99:99Z"} {
+		if got := lastCheckin(in); got != "unknown" {
+			t.Errorf("lastCheckin(%q) = %q, want \"unknown\"", in, got)
+		}
+	}
+}
 
 // DoListeners takes the listener ID from its arguments, not the menu-context id passed to the
 // method (which is intentionally unused). These tests exercise the argument validation + listener-ID

@@ -227,6 +227,18 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 	return
 }
 
+// lastCheckin returns a human-readable "H:MM:SS ago" string for an agent's last check-in
+// timestamp (RFC3339). It returns "unknown" when the timestamp cannot be parsed (e.g. an agent
+// that has not checked in yet), rather than computing a duration from the zero time.
+func lastCheckin(checkin string) string {
+	t, err := time.Parse(time.RFC3339, checkin)
+	if err != nil {
+		return "unknown"
+	}
+	d := time.Since(t)
+	return fmt.Sprintf("%d:%02d:%02d ago", int(d.Hours()), int(d.Minutes())%60, int(d.Seconds())%60)
+}
+
 // DoAgent handles the command for the Agent menu
 func (c *Command) DoAgent(id uuid.UUID, arguments string) (response commands.Response) {
 	// Parse the arguments
@@ -254,16 +266,8 @@ func (c *Command) DoAgent(id uuid.UUID, arguments string) (response commands.Res
 		return
 	}
 
-	// Calculate the last checkin time
-	t, err := time.Parse(time.RFC3339, a.StatusCheckin())
-	if err != nil {
-		// DO NOTHING
-	}
-	lastTime := time.Since(t)
-	lastTimeStr := fmt.Sprintf("%d:%02d:%02d ago",
-		int(lastTime.Hours()),
-		int(lastTime.Minutes())%60,
-		int(lastTime.Seconds())%60)
+	// Calculate how long ago the agent last checked in
+	lastTimeStr := lastCheckin(a.StatusCheckin())
 
 	build := a.Build()
 	host := a.Host()
