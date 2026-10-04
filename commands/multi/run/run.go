@@ -162,7 +162,6 @@ func (c *Command) DoAgent(id uuid.UUID, arguments string) (response commands.Res
 	args, err := shellwords.Parse(arguments)
 	if err != nil {
 		response.Message = message.NewErrorMessage(fmt.Errorf("there was an error parsing the arguments: %s", err))
-		err = nil
 		return
 	}
 

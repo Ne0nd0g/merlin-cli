@@ -97,7 +97,6 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 	args, err := shellwords.Parse(arguments)
 	if err != nil {
 		response.Message = message.NewErrorMessage(fmt.Errorf("there was an error parsing the arguments: %s", err))
-		err = nil
 		return
 	}
 

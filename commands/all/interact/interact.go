@@ -138,7 +138,6 @@ func (c *Command) DoAgent(arguments string) (response commands.Response) {
 	a, err := rpc.GetAgent(id)
 	if err != nil {
 		response.Message = message.NewErrorMessage(fmt.Errorf("there was an error retrieving Agent information: %s", err))
-		err = nil
 		return
 	}
 	// Build the Response
