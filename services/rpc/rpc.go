@@ -40,7 +40,6 @@ import (
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -103,15 +102,8 @@ func (s *Service) Connect(addr string) error {
 	s.rpcAddr = addr
 	var opts []grpc.DialOption
 
-	// Setup TLS credentials
-	if s.tlsConfig != nil {
-		if s.tlsConfig.RootCAs != nil {
-			opts = append(opts, grpc.WithTransportCredentials(credentials.NewTLS(s.tlsConfig)))
-		} else {
-			opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
-		}
-	}
-
+	// The CLI always dials over TLS. getTLSConfig sets InsecureSkipVerify when not in -secure mode
+	// (encrypted channel, server certificate not verified) and pins RootCAs when a CA is provided.
 	opts = append(opts, grpc.WithUnaryInterceptor(s.authenticate))
 	opts = append(opts, grpc.WithStreamInterceptor(s.authenticateStream))
 	opts = append(opts, grpc.WithTransportCredentials(credentials.NewTLS(s.tlsConfig)))
