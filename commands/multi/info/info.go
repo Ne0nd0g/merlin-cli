@@ -365,7 +365,7 @@ func (c *Command) DoListener(id uuid.UUID, arguments string) (response commands.
 }
 
 // DoListeners handles the command for the Listeners menu
-func (c *Command) DoListeners(id uuid.UUID, arguments string) (response commands.Response) {
+func (c *Command) DoListeners(_ uuid.UUID, arguments string) (response commands.Response) {
 	// Parse the arguments
 	args := strings.Split(arguments, " ")
 
@@ -392,13 +392,12 @@ func (c *Command) DoListeners(id uuid.UUID, arguments string) (response commands
 		}
 	}
 	// Parse the UUID
-	var err error
-	id, err = uuid.Parse(args[1])
+	listenerID, err := uuid.Parse(args[1])
 	if err != nil {
 		response.Message = message.NewErrorMessage(fmt.Errorf("there was an error parsing UUID '%s': %s\n%s", args[1], err, h.Usage()))
 		return
 	}
-	return c.DoListener(id, arguments)
+	return c.DoListener(listenerID, arguments)
 }
 
 // DoListenerSetup handles the command for the ListenerSetup menu

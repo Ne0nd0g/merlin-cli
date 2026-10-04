@@ -115,7 +115,7 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 }
 
 // Add adds an agent to a named group and creates the group if it does not exist
-func (c *Command) Add(id uuid.UUID, arguments string) (response commands.Response) {
+func (c *Command) Add(_ uuid.UUID, arguments string) (response commands.Response) {
 	sub := "add"
 
 	description := "Add an agent to a named group"
@@ -152,14 +152,13 @@ func (c *Command) Add(id uuid.UUID, arguments string) (response commands.Respons
 		return
 	}
 
-	var err error
-	id, err = uuid.Parse(args[2])
+	agentID, err := uuid.Parse(args[2])
 	if err != nil {
 		response.Message = message.NewErrorMessage(fmt.Errorf("there was an error parsing the agent ID '%s': %s\n%s", args[2], err, h.Usage()))
 		return
 	}
 
-	response.Message = rpc.GroupAdd(id, args[3])
+	response.Message = rpc.GroupAdd(agentID, args[3])
 	return
 }
 
@@ -216,7 +215,7 @@ func (c *Command) List(arguments string) (response commands.Response) {
 }
 
 // Remove removes an agent from a named group
-func (c *Command) Remove(id uuid.UUID, arguments string) (response commands.Response) {
+func (c *Command) Remove(_ uuid.UUID, arguments string) (response commands.Response) {
 	description := "Remove an agent to a named group"
 	example := "Merlin» group remove 99dbe632-984c-4c98-8f38-11535cb5d937 EvilCorp\n" +
 		"\t[i] Agent 99dbe632-984c-4c98-8f38-11535cb5d937 removed from group EvilCorp"
@@ -250,14 +249,13 @@ func (c *Command) Remove(id uuid.UUID, arguments string) (response commands.Resp
 		return
 	}
 
-	var err error
-	id, err = uuid.Parse(args[2])
+	agentID, err := uuid.Parse(args[2])
 	if err != nil {
 		response.Message = message.NewErrorMessage(fmt.Errorf("there was an error parsing the agent ID '%s': %s\n%s", args[2], err, h.Usage()))
 		return
 	}
 
-	response.Message = rpc.GroupRemove(id, args[3])
+	response.Message = rpc.GroupRemove(agentID, args[3])
 	return
 }
 
