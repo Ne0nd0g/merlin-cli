@@ -7,6 +7,11 @@ DEST=.
 # Go build flags
 LDFLAGS=-ldflags '-X github.com/Ne0nd0g/merlin-cli/version.Build=${BUILD}'
 
+# Build fully static, pure-Go binaries for every target. merlin-cli uses no cgo,
+# so this only forces static linking + Go's native net/user resolvers and makes
+# builds deterministic regardless of which C toolchains exist on the build host.
+export CGO_ENABLED := 0
+
 default:
 	go build ${LDFLAGS} -o merlinCLI main.go
 
