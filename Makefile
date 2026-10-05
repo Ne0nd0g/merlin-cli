@@ -11,7 +11,7 @@ default:
 	go build ${LDFLAGS} -o merlinCLI main.go
 
 # Build all
-all: darwin linux windows
+all: darwin linux windows arm arm64
 
 # Compile Server - Darwin x64
 darwin:
@@ -24,6 +24,14 @@ linux:
 # Compile Server - Windows x64
 windows:
 	export GOOS=windows;export GOARCH=amd64;go build ${LDFLAGS} -o ${DIR}/merlinCLI-Windows-x64.exe main.go
+
+# Compile Server - Linux arm (armv7)
+arm:
+	export GOOS=linux;export GOARCH=arm;export GOARM=7;go build ${LDFLAGS} -o ${DIR}/merlinCLI-Linux-arm main.go
+
+# Compile Server - Linux arm64
+arm64:
+	export GOOS=linux;export GOARCH=arm64;go build ${LDFLAGS} -o ${DIR}/merlinCLI-Linux-arm64 main.go
 
 move:
 	mv ${DIR}/merlinCLI-* ${DEST}
