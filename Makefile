@@ -16,11 +16,15 @@ default:
 	go build ${LDFLAGS} -o merlinCLI main.go
 
 # Build all
-all: darwin linux windows arm arm64
+all: darwin darwin-arm64 linux windows arm arm64
 
 # Compile Server - Darwin x64
 darwin:
 	export GOOS=darwin;export GOARCH=amd64;go build ${LDFLAGS} -o ${DIR}/merlinCLI-Darwin-x64 main.go
+
+# Compile Darwin arm64 (Apple Silicon)
+darwin-arm64:
+	export GOOS=darwin;export GOARCH=arm64;go build ${LDFLAGS} -o ${DIR}/merlinCLI-Darwin-arm64 main.go
 
 # Compile Server - Linux x64
 linux:
