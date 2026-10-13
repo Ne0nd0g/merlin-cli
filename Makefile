@@ -1,11 +1,11 @@
 # Merlin version
-VERSION=$(shell cat version/version.go |grep "const Version ="|cut -d"\"" -f2)
+VERSION=$(shell git describe --tags --always --dirty 2>/dev/null | sed 's/^v//')
 BUILD=$(shell git rev-parse HEAD)
 DIR=bin/v${VERSION}/${BUILD}
 DEST=.
 
 # Go build flags
-LDFLAGS=-ldflags '-X github.com/Ne0nd0g/merlin-cli/version.Build=${BUILD}'
+LDFLAGS=-ldflags '-X github.com/Ne0nd0g/merlin-cli/version.Build=${BUILD} -X github.com/Ne0nd0g/merlin-cli/version.Version=${VERSION}'
 
 # Build fully static, pure-Go binaries for every target. merlin-cli uses no cgo,
 # so this only forces static linking + Go's native net/user resolvers and makes
