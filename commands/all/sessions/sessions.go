@@ -24,6 +24,7 @@ import (
 	// Standard
 	"fmt"
 	"log/slog"
+	"slices"
 	"strings"
 	// 3rd Party
 	"github.com/chzyer/readline"
@@ -53,13 +54,16 @@ func NewCommand() *Command {
 	cmd.name = "sessions"
 	cmd.menus = []menu.Menu{menu.ALLMENUS}
 	cmd.os = os.LOCAL
-	description := "List established Agent sessions"
-	usage := "sessions"
-	example := "Merlin» sessions \n\n" +
+	description := "List established Agent sessions, optionally filtered by status, host, user, or platform"
+	usage := "sessions [active|delayed|dead|init ...] [host text] [user text] [platform text]"
+	example := "Merlin» sessions active host ubuntu \n\n" +
 		"\t               AGENT GUID              | TRANSPORT |  PLATFORM   |   HOST   | USER |   PROCESS    | STATUS | LAST CHECKIN | NOTE  \n" +
 		"\t+--------------------------------------+-----------+-------------+----------+------+--------------+--------+--------------+------+\n" +
 		"\t  e452dbe0-7b73-4b28-b421-8360fff848f0 | h2        | linux/amd64 |  ubuntu  | mark | main(154087) | Active | 0:00:05 ago  |       "
-	notes := ""
+	notes := "Without filters, every session is listed.\n" +
+		"\tStatus words can be repeated; a session matching any of them is listed.\n" +
+		"\tThe host, user, and platform filters match any part of the value.\n" +
+		"\tMatching ignores case, and a session must match every filter given."
 	cmd.help = help.NewHelp(description, example, notes, usage)
 	return &cmd
 }
@@ -68,7 +72,11 @@ func NewCommand() *Command {
 // Errors are not returned to ensure the CLI is not interrupted.
 // Errors are logged and can be viewed by enabling debug output in the CLI
 func (c *Command) Completer(menu.Menu, uuid.UUID) readline.PrefixCompleterInterface {
-	return readline.PcItem(c.name)
+	var filters []readline.PrefixCompleterInterface
+	for _, word := range slices.Concat(sessionStatuses, sessionContainsFields) {
+		filters = append(filters, readline.PcItem(word))
+	}
+	return readline.PcItem(c.name, filters...)
 }
 
 // Do executes the command and returns a Response to the caller to facilitate changes in the CLI service
@@ -79,7 +87,8 @@ func (c *Command) Completer(menu.Menu, uuid.UUID) readline.PrefixCompleterInterf
 func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response commands.Response) {
 	slog.Debug("entering into function", "menu", m, "id", id, "arguments", arguments)
 	// Parse the arguments
-	args := strings.Split(arguments, " ")
+	args := strings.Fields(arguments)
+	var filter sessionFilter
 
 	// Check for help first
 	if len(args) > 1 {
@@ -88,9 +97,21 @@ func (c *Command) Do(m menu.Menu, id uuid.UUID, arguments string) (response comm
 			response.Message = message.NewUserMessage(message.Info, fmt.Sprintf("'%s' command help\n\nDescription:\n\t%s\nUsage:\n\t%s\nExample:\n\t%s\nNotes:\n\t%s", c, c.help.Description(), c.help.Usage(), c.help.Example(), c.help.Notes()))
 			return
 		}
+		var err error
+		filter, err = parseFilter(args[1:])
+		if err != nil {
+			response.Message = message.NewUserMessage(message.Info, fmt.Sprintf("%s\n%s", err, c.help.Usage()))
+			return
+		}
 	}
 
 	header, rows, err := rpc.GetAgentsRows()
+	if err != nil {
+		response.Message = message.NewErrorMessage(err)
+		return
+	}
+
+	rows, err = filterRows(header, rows, filter)
 	if err != nil {
 		response.Message = message.NewErrorMessage(err)
 		return
